@@ -2,14 +2,23 @@
 
 Tao thu vien markdown tu YouTube playlist cho khoa hoc Moi Gioi Bat Dong San.
 
+![Python](https://img.shields.io/badge/Python-3.7+-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+![YouTube API](https://img.shields.io/badge/API-YouTube%20Data%20v3-red)
+![Obsidian](https://img.shields.io/badge/Compatible-Obsidian-7B68EE)
+
+---
+
 ## Chuc nang chinh
 
-- **Lay data tu YouTube**: Dung YouTube Data API de lay danh sach video trong playlist
-- **Auto-generate Markdown**: Tao file .md cho moi video voi tieu de, mo ta, thumbnail
-- **Obsidian-style Linking**: [[Wiki links]] giua cac file de dieu huong nhanh
+- **Lay data tu YouTube**: Dung YouTube Data API v3 lay danh sach video trong playlist
+- **Auto-generate Markdown**: Tao file `.md` cho moi video voi tieu de, mo ta, thumbnail
+- **Obsidian-style Linking**: `[[Wiki links]]` giua cac file de dieu huong nhanh
 - **3 Nhom Noi Dung**: Phan nhom tu dong (Co Ban / Chuyen Sau / Thuc Chien)
 - **Muc luc Auto**: Tao file index va toc cho tung nhom
 - **Metadata JSON**: File tong hop thong tin vault
+
+---
 
 ## Cai dat
 
@@ -22,54 +31,36 @@ cd moi-gioi-bds-vault
 
 # Cai dat dependencies
 pip install -r requirements.txt
+
+# Sao che file cau hinh ma (khong bat buoc)
+cp .env.example .env
+# Dien PLAYLIST_ID va API_KEY vao file .env
 ```
 
-### Tren Google Colab (Nhanh - Khuyen nghi)
+### Tren Google Colab (Khuyen nghi - nhanh va mien phi)
 
-1. Mo [Google Colab](https://colab.research.google.com)
-2. Upload file gen.py len Colab
-3. Copy noi dung gen.py vao cell dau tien
-4. Trong cell thu 2, dien:
-   ```python
-   PLAYLIST_ID = "ID_playlist_cua_ban"
-   API_KEY = "API_key_cua_ban"
-   ```
-5. Run cell thu 3:
-   ```python
-   !pip install google-api-python-client
-   ```
-6. Run cell cua gen.py (Shift+Enter)
-7. Tai vault ve: `!zip -r vault.zip Moi_Gioi_BDS_Vault` va download
+1. Mo [Google Colab](https://colab.research.google.com/)
+2. Upload file `gen.py` len Colab
+3. Trong cell, dien: `PLAYLIST_ID = "ID_playlist_cua_ban"` va `API_KEY = "API_key_cua_ban"`
+4. Run cell cai dat: `!pip install -r requirements.txt` (hoac `!pip install google-api-python-client requests`)
+5. Run cell cua `gen.py`
+6. Tai vault ve: `!zip -r vault.zip Moi_Gioi_BDS_Vault` va download
+
+---
 
 ## Cau hinh
 
-Mo file `gen.py` va chinh sua cac bien sau:
+Mo file `gen.py` va chinh sua cac bien:
 
-```python
-# Playlist ID tren YouTube
-PLAYLIST_ID = "PLxxxxxx"  # Thay bang ID playlist cua ban
+| Bien | Mo ta | Vi du |
+|------|-------|-------|
+| `PLAYLIST_ID` | ID playlist YouTube | `PLxxxxxxxxxxxxxxx` |
+| `API_KEY` | Google Cloud API Key | `AIzaSy...` |
+| `VAULT_NAME` | Ten thu muc output | `Moi_Gioi_BDS_Vault` |
 
-# API Key Google (neu khong co, script se dung demo data)
-API_KEY = "YOUR_API_KEY"  # Thay bang API key
+> **Note**: Neu khong co API Key, script se tu dong dung demo data (5 videos mau).
 
-# Ten thu muc vault se duoc tao
-VAULT_NAME = "Moi_Gioi_BDS_Vault"
-```
-
-### Lay API Key Google
-
-1. Truy cap [Google Cloud Console](https://console.cloud.google.com/)
-2. Tao project moi (hoac chon project co san)
-3. Bat YouTube Data API v3
-4. Tao API Key trong Credentials
-5. Copy key vao bien `API_KEY` trong gen.py
-
-## Lay Playlist ID
-
-1. Mo playlist tren YouTube
-2. URL se co dang: `https://www.youtube.com/playlist?list=PLxxxxxx`
-3. Copy phan sau `list=` (vi du: `PLxxxxxx`)
-4. Dien vao bien `PLAYLIST_ID`
+---
 
 ## Cach su dung
 
@@ -81,57 +72,76 @@ python3 gen.py
 
 ### Output
 
-Script se tao thu muc `Moi_Gioi_BDS_Vault/` voi cau truc:
+Script tao thu muc `Moi_Gioi_BDS_Vault/` bao gom:
 
-```
-Moi_Gioi_BDS_Vault/
-├── Tong_Muc_Luc.md              # Tong muc luc chinh
-├── Muc_Luc_Co_Ban.md            # Muc luc nhom Co Ban
-├── Muc_Luc_Chuyen_Sau.md        # Muc luc nhom Chuyen Sau
-├── Muc_Luc_Thuc_Chien.md        # Muc luc nhom Thuc Chien
-├── [ten-video-1].md             # File markdown cho video 1
-├── [ten-video-2].md             # File markdown cho video 2
-├── ...                          # Cac file video khac
-└── vault_metadata.json          # Metadata JSON
-```
+| File | Mo ta |
+|------|-------|
+| `Tong_Muc_Luc.md` | Tong muc luc chinh |
+| `Muc_Luc_[Nhom].md` | Muc luc cho tung nhom |
+| `[ten-video].md` | File markdown cho moi video |
+| `vault_metadata.json` | Metadata tong hop |
 
 ### Mo trong Obsidian
 
-1. Mo Obsidian
-2. Chon "Open folder as vault" -> chon thu muc `Moi_Gioi_BDS_Vault`
+1. Chon **"Open folder as vault"**
+2. Chon thu muc `Moi_Gioi_BDS_Vault`
 3. Mo file `Tong_Muc_Luc.md` de bat dau
+4. Dung `Ctrl/Cmd + O` de tim kiem nhanh file
+
+---
 
 ## 3 Nhom Noi Dung
 
-Script se phan nhom cac video thanh 3 nhom chinh:
+Script phan nhom video tu dong theo chi so:
 
-| Nhom | Mo ta | So video (mau) |
-|------|-------|----------------|
-| **00_Co_Ban** | Cac bai co ban ve moi gioi bat dong san | ~34 |
-| **01_Chuyen_Sau** | Cac ky nang chuyen sau trong moi gioi BDS | ~34 |
-| **02_Thuc_Chien** | Cac truong hop thuc te va bai hoc kinh nghiem | ~35 |
+| Nhom | Mo ta | So video du kien |
+|------|-------|------------------|
+| `00_Co_Ban` | Cac bai co ban ve moi gioi BDS | ~34 videos |
+| `01_Chuyen_Sau` | Ky nang chuyen sau nang cao | ~34 videos |
+| `02_Thuc_Chien` | Case study va truong hop thuc te | ~35 videos |
 
-**Luu y**: So video trong moi nhom duoc phan tu dong de. Ban co the chinh sua ham `assign_to_group()` trong gen.py de phan nhom tu tay.
+---
 
-## Workflow Lap lai (Them vault moi)
+## Cau truc thu muc
 
-Khi co playlist moi, ban chi can:
+```
+moi-gioi-bds-vault/
+├── gen.py              # Script chinh
+├── requirements.txt    # Python dependencies
+├── .gitignore          # Git ignore patterns
+├── .env.example        # Template cau hinh
+├── README.md           # Tai lieu huong dan
+└── Moi_Gioi_BDS_Vault/ # (duoc tao sau khi chay script)
+    ├── Tong_Muc_Luc.md
+    ├── Muc_Luc_Co_Ban.md
+    ├── Muc_Luc_Chuyen_Sau.md
+    ├── Muc_Luc_Thuc_Chien.md
+    ├── [video-1].md
+    ├── [video-2].md
+    └── vault_metadata.json
+```
 
-1. **Copy gen.py** sang thu muc project moi
-2. **Chinh sua bien cau hinh** (PLAYLIST_ID, API_KEY, VAULT_NAME, GROUPS)
-3. **Chay gen.py** -> Vault moi se duoc tao
-4. **Upload vault** vao GitHub (create repo moi)
+---
+
+## Lay YouTube Data API Key
+
+1. Truy cap [Google Cloud Console](https://console.cloud.google.com/)
+2. Tao project moi (hoac chon project co san)
+3. Bat **YouTube Data API v3** trong **APIs & Services > Library**
+4. Tao **API Key** trong **APIs & Services > Credentials**
+5. Copy API Key va dien vao `gen.py` hoac file `.env`
+
+---
 
 ## Dependencies
 
-- Python 3.7+
-- `google-api-python-client` (cho YouTube Data API)
-- `requests` (cho demo data)
+| Package | Mo ta |
+|---------|-------|
+| `google-api-python-client` | Client library cho YouTube Data API v3 |
+| `requests` | Thu vien goi HTTP_requests |
+
+---
 
 ## License
 
 MIT License
-
----
-
-*Tao boi gen.py | Repo: [ketoanhostech-creator/moi-gioi-bds-vault](https://github.com/ketoanhostech-creator/moi-gioi-bds-vault)*
