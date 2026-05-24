@@ -1,0 +1,5 @@
+# Khoi thu vien YouTube Data API v3
+google-api-python-client>=2.0.0
+
+# Goi HTTP requests
+requests>=2.28.0
