@@ -3,3 +3,6 @@ google-api-python-client>=2.0.0
 
 # Goi HTTP requests
 requests>=2.28.0
+
+# Doc file .env
+dotenv
